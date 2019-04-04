@@ -43,7 +43,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Cables.cs" />
+    <Compile Include="Classes\Category.cs" />
     <Compile Include="Classes\Configuration.cs" />
+    <Compile Include="Classes\CPU.cs" />
+    <Compile Include="Classes\GraphicCard.cs" />
+    <Compile Include="Classes\HDD.cs" />
+    <Compile Include="Classes\Item.cs" />
+    <Compile Include="Classes\Modules.cs" />
+    <Compile Include="Classes\Monitor.cs" />
+    <Compile Include="Classes\Motherboard.cs" />
+    <Compile Include="Classes\Part.cs" />
+    <Compile Include="Classes\Ram.cs" />
+    <Compile Include="Classes\RoomEquip.cs" />
     <Compile Include="Enums\Enums.cs" />
     <Compile Include="Classes\Extensions.cs" />
     <Compile Include="Interfaces\IDiscount.cs" />
