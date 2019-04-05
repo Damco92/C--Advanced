@@ -104,6 +104,65 @@ namespace CSharpAdvanced_Class4
             Console.WriteLine(pc1.GetPrice().PriceWithCurrency("EUR"));
             Console.WriteLine("Discount price: {0}", pc1.GetPriceWithDiscount().PriceWithCurrency("EUR"));
             Console.WriteLine("--------------------");
+
+            Configuration pc2 = new Configuration(Colors.Gray); //pc configuration
+            pc2.Name = "Configuration 2";
+            //add modules to configuration 
+            pc2.AddModuleToProduct(m1, 1);
+            pc2.AddModuleToProduct(m2, 1);
+
+            //add parts to configuration
+            pc2.AddPartToProduct(p39, 1); //Monitor
+            pc2.AddPartToProduct(p40, 1); //PC box
+
+            Console.WriteLine(pc2.Name);
+            Console.WriteLine("Box color: {0}", pc2.BoxColor);
+            pc2.SetDiscount(3); // 3%
+            Console.WriteLine(pc2.GetPrice().PriceWithCurrency("EUR"));
+            Console.WriteLine("Discount price: {0}", pc2.GetPriceWithDiscount().PriceWithCurrency("EUR"));
+            Console.WriteLine("--------------------");
+
+
+            Configuration pc3 = new Configuration(Colors.Silver); //pc configuration
+            pc3.Name = "Configuration 3";
+            //add modules to configuration 
+            pc3.AddModuleToProduct(m2, 1);
+
+            //add parts to configuration
+
+            pc3.AddPartToProduct(p38, 2); //Monitors x2
+            pc3.AddPartToProduct(p40, 1); //PC box
+            pc3.AddPartToProduct(p4, 1);
+            pc3.AddPartToProduct(p7, 1);
+            pc3.AddPartToProduct(p10, 1);
+            pc3.AddPartToProduct(p11, 1);
+
+            Console.WriteLine(pc2.Name);
+            Console.WriteLine("Box color: {0}", pc3.BoxColor);
+            pc3.SetDiscount(7); // 7%
+            Console.WriteLine(pc3.GetPrice().PriceWithCurrency("EUR"));
+            Console.WriteLine("Discount price: {0}", pc3.GetPriceWithDiscount().PriceWithCurrency("EUR"));
+            Console.WriteLine("--------------------");
+
+            Configuration pc4 = new Configuration(Colors.Silver); //pc configuration
+            pc4.Name = "Configuration 4";
+            //add modules to configuration 
+            pc4.AddModuleToProduct(m1, 1);
+
+            //add parts to configuration
+
+            pc4.AddPartToProduct(p38, 2); //Monitors x2
+            pc4.AddPartToProduct(p23, 1);
+            pc4.AddPartToProduct(p27, 1);
+            pc4.AddPartToProduct(p33, 1);
+
+            Console.WriteLine(pc4.Name);
+            Console.WriteLine("Box color: {0}", pc4.BoxColor);
+            pc4.SetDiscount(5); // 5%
+            Console.WriteLine(pc3.GetPrice().PriceWithCurrency("EUR"));
+            Console.WriteLine("Discount price: {0}", pc4.GetPriceWithDiscount().PriceWithCurrency("EUR"));
+            Console.WriteLine("--------------------");
+
             #endregion
 
             Category.CPU = store.Where(x => x.PartRole == PartRole.CPU).ToList();
@@ -117,7 +176,46 @@ namespace CSharpAdvanced_Class4
 
             Console.WriteLine($"The minimum price of our cheapest configuration is {MinimumConfiguration.GetPrice()} Euros!");
             Console.WriteLine($"The most expensive configuration that we offer is {MostExpensive.GetPrice() + p40.Price}");
-            Console.ReadLine();
+
+            List<Configuration> availableConfigurations = new List<Configuration> { pc1, pc2, pc3, pc4 };
+
+            ChooseConfig(availableConfigurations);
+
+            RoomEquip sedcRoom = new RoomEquip();
+            sedcRoom.AddConfigurationsToRoom(pc1, 5);
+            sedcRoom.AddConfigurationsToRoom(pc2, 5);
+            sedcRoom.Name = "Sedc Classroom";
+            sedcRoom.SetDiscount(20);
+            Console.WriteLine(sedcRoom.Name);
+            Console.WriteLine(sedcRoom.GetPrice().PriceWithCurrency("EUR"));
+            Console.WriteLine("Discount price: {0}", sedcRoom.GetPriceWithDiscount().PriceWithCurrency("EUR"));
+            Console.WriteLine("--------------------");
+
+            Console.Read();
+
+        }
+        public static void ChooseConfig(List<Configuration> configs)
+        {
+            Console.WriteLine("Please enter the amount of euros you want to spend!");
+            string money = Console.ReadLine();
+            double moneyToSpend;
+            bool castMoney = double.TryParse(money, out moneyToSpend);
+            if(castMoney)
+            {
+                Console.WriteLine("You can choose from the following configurations");
+                foreach (var config in configs)
+                {
+                    if (moneyToSpend >= config.GetPriceWithDiscount())
+                    {
+                        Console.WriteLine($"{config.Name}");
+                    }
+                }
+
+            }
+            else
+            {
+                throw new Exception("The input must be a digit!");
+            }
         }
     }
 }
