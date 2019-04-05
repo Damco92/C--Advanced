@@ -13,6 +13,8 @@ namespace CSharpAdvanced_Class4
         public static List<Part> MotherBoards { get; set; }
         public static List<Part> CPU { get; set; }
         public static List<Part> Cables { get; set; }
-
+        public static List<Part> GraphicCards { get; set; }
+        public static List<Part> Rams { get; set; }
+        public static List<Part> Monitors { get; set; }
     }
 }

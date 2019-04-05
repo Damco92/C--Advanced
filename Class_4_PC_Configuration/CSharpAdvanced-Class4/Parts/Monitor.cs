@@ -4,24 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CSharpAdvanced_Class4.Interfaces;
+using CSharpAdvanced_Class4.Enums;
 
 namespace CSharpAdvanced_Class4
 {
-    public class Ram : Part,IPrice
+    public class Monitor : Part
     {
-        public Ram(string name, double price,double speed,double size) : base(name,price)
+        public Monitor(string name,double price,string pix,double size) : base(name,price,PartRole.Monitor)
         {
-
-            Speed = speed;
+            Pixels = pix;
             Size = size;
         }
 
-        public Ram()
+        public Monitor()
         {
 
         }
 
-        public double Speed { get; set; }
+        public string Pixels { get; set; }
         public double Size { get; set; }
     }
 }

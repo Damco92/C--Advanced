@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static CSharpAdvanced_Class4.Enums.Enums;
+using CSharpAdvanced_Class4.Enums;
 
 namespace CSharpAdvanced_Class4
 {
@@ -49,8 +50,8 @@ namespace CSharpAdvanced_Class4
             Part p37 = new Monitor("Asus", 120, "1024x768", 32);
             Part p38 = new Monitor("Dell", 140, "1024x768", 32);
             Part p39 = new Monitor("Apple", 200, "1024x768", 32);
-            Part p40 = new Part("Computer box", 100);
-
+            Part p40 = new Part() { Name = "Computer box", Price = 120 };
+            List<Part> store = new List<Part> { p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, p21, p22, p23, p24, p25, p26, p27, p29, p30, p31, p32, p33, p34, p35, p36, p37, p38, p39, p40 };
 
            
 
@@ -94,7 +95,7 @@ namespace CSharpAdvanced_Class4
             pc1.AddModuleToProduct(m2, 1);
 
             //add parts to configuration
-            pc1.AddPartToProduct(p37, 2); //Monitors x2
+            pc1.AddPartToProduct(p37, 1); //Monitors x2
             pc1.AddPartToProduct(p40, 1); //PC box
 
             Console.WriteLine(pc1.Name);
@@ -103,8 +104,20 @@ namespace CSharpAdvanced_Class4
             Console.WriteLine(pc1.GetPrice().PriceWithCurrency("EUR"));
             Console.WriteLine("Discount price: {0}", pc1.GetPriceWithDiscount().PriceWithCurrency("EUR"));
             Console.WriteLine("--------------------");
-            Console.Read();
             #endregion
+
+            Category.CPU = store.Where(x => x.PartRole == PartRole.CPU).ToList();
+            Category.HDD = store.Where(x => x.PartRole == PartRole.HDD).ToList();
+            Category.Cables = store.Where(x => x.PartRole == PartRole.Cables).ToList();
+            Category.Rams = store.Where(x => x.PartRole == PartRole.Ram).ToList();
+            Category.MotherBoards = store.Where(x => x.PartRole == PartRole.Motherboard).ToList();
+            Category.Monitors = store.Where(x => x.PartRole == PartRole.Monitor).ToList();
+            Category.GraphicCards = store.Where(x => x.PartRole == PartRole.Graphic_Card).ToList();
+
+
+            Console.WriteLine($"The minimum price of our cheapest configuration is {MinimumConfiguration.GetPrice()} Euros!");
+            Console.WriteLine($"The most expensive configuration that we offer is {MostExpensive.GetPrice() + p40.Price}");
+            Console.ReadLine();
         }
     }
 }
