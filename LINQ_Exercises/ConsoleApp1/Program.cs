@@ -89,8 +89,11 @@ namespace ConsoleApp1
 
             //PART 2
             // 1. Take person Cristofer and add Jack, Ellie, Hank and Tilly as his dogs.
-            var Christopher = people.Where(x => x.FirstName == "Cristofer").FirstOrDefault();
-            Christopher.Dogs = dogs.Where(dog => dog.Name == "Ellie" || dog.Name == "Hank" || dog.Name == "Tilly").ToList();
+
+            var Cristopher = people.Where(x => x.FirstName == "Cristofer").FirstOrDefault();
+           
+            //var Christopher = people.Where(x => x.FirstName == "Cristofer").FirstOrDefault();
+            //Christopher.Dogs = dogs.Where(dog => dog.Name == "Ellie" || dog.Name == "Hank" || dog.Name == "Tilly").ToList();
             // PrintDog(Christopher.Dogs);
             // 2. Take person Freddy and add Oscar, Toby, Chanel, Bo and Scout as his dogs.
             var freddy = people.Where(x => x.FirstName == "Freddy").FirstOrDefault();
@@ -170,43 +173,65 @@ namespace ConsoleApp1
             //    }
             //}
             // 6. Find and print last 10 persons grouped by their age.
-            var lastTenPersons = people.Count - 10;
-            var groupedPersons = people.SkipWhile((person, index) => index < lastTenPersons).GroupBy(x => x.Age).ToList();
-            Console.WriteLine("The names of the last ten people are: ");
-            foreach (var item in groupedPersons.OrderBy(x => x.Key))
-            {
-                Console.WriteLine($"The pepole's age is {item.Key} :");
-                foreach (var p in item)
-                {
-                    Console.WriteLine(p.FirstName);
-                }
-            }
+            //var lastTenPersons = people.Count - 10;
+            //var groupedPersons = people.SkipWhile((person, index) => index < lastTenPersons).GroupBy(x => x.Age).ToList();
+            //Console.WriteLine("The names of the last ten people are: ");
+            //foreach (var item in groupedPersons.OrderBy(x => x.Key))
+            //{
+            //    Console.WriteLine($"The pepole's age is {item.Key} :");
+            //    foreach (var p in item)
+            //    {
+            //        Console.WriteLine(p.FirstName);
+            //    }
+            //}
             // 7. Find and print all dogs names from Cristofer, Freddy, Erin and Amelia, grouped by color and ordered by name - ASCENDING ORDER.
-            var allDogs = people.Where(x => x.FirstName == "Freddy" || x.FirstName == "Cristofer" || x.FirstName == "Erin" || x.FirstName == "Amelia").Select(x => x.Dogs).ToList();
-            foreach (var dogCollection in allDogs)
-            {
-                Console.WriteLine("Dogs of color: ");
-                foreach (var dog in dogCollection.GroupBy(x => x.Color))
-                {
-                    Console.WriteLine($"{dog.Key}");
-                    foreach (var item in dog.OrderBy(x => x.Name))
-                    {
-                        Console.WriteLine($"{item.Name}");
-                    }
-                }
-            }
+            //var allDogs = people.Where(x => x.FirstName == "Freddy" || x.FirstName == "Cristofer" || x.FirstName == "Erin" || x.FirstName == "Amelia").Select(x => x.Dogs).ToList();
+            //foreach (var dogCollection in allDogs)
+            //{
+            //    Console.WriteLine("Dogs of color: ");
+            //    foreach (var dog in dogCollection.GroupBy(x => x.Color))
+            //    {
+            //        Console.WriteLine($"{dog.Key}");
+            //        foreach (var item in dog.OrderBy(x => x.Name))
+            //        {
+            //            Console.WriteLine($"{item.Name}");
+            //        }
+            //    }
+            //}
             // 8. Find all persons that have same dogs races and order them by name length ASCENDING, then by age DESCENDING.
-            List<Person> myPe = new List<Person> { };
-            foreach (var item in people)
+            //List<Person> myPe = new List<Person> { };
+            //foreach (var item in people)
+            //{
+            //    if (GetPeopleWithDogs(people))
+            //    {
+            //        myPe.Add(item);
+            //    }
+            //}
+
+            // 9. Find the last dog of Amelia and print all dogs form other persons older than Amelia, ordered by dogs age DESCENDING.
+            var ameliaLastDog = Amelia.Dogs.LastOrDefault();
+            var peopleOrderThenAmelia = people.Where(x => x.Age > Amelia.Age).ToList();
+            foreach (var per in peopleOrderThenAmelia)
             {
-                if (GetPeopleWithDogs(people))
+                if (per.Dogs.Count != 0) { 
+                    Console.WriteLine($"Person's name {per.FirstName}");
+                foreach (var dog in per.Dogs.OrderByDescending(x => x.Age))
                 {
-                    myPe.Add(item);
+                    Console.WriteLine($"{dog.Name}  {dog.Age}");
+                }
+                }
+                else {
+                    continue;
                 }
             }
 
-            // 9. Find the last dog of Amelia and print all dogs form other persons older than Amelia, ordered by dogs age DESCENDING.
+
             // 10. Find all developers older than 20 with more than 1 dog that contains letter 'e' in the name and print their names and job positions.
+            var developersOlderThen20 = people.Where(x => x.Occupation == Job.Developer).Where(x => x.Age > 20).Where(x => x.Dogs.Count > 1).Where(x => x.FirstName.Contains("R") || x.LastName.Contains("R")).ToList();
+            foreach (var developer in developersOlderThen20)
+            {
+                Console.WriteLine($"Developer name: {developer.FirstName} {developer.LastName}, job position: {developer.Occupation}");
+            }
 
             #endregion
             Console.Read();
