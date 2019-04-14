@@ -210,22 +210,20 @@ namespace ConsoleApp1
 
             // 9. Find the last dog of Amelia and print all dogs form other persons older than Amelia, ordered by dogs age DESCENDING.
             var ameliaLastDog = Amelia.Dogs.LastOrDefault();
-            var peopleOrderThenAmelia = people.Where(x => x.Age > Amelia.Age).ToList();
-            foreach (var per in peopleOrderThenAmelia)
+            var peopleOrderThenAmelia = people.Where(x => x.Age > Amelia.Age).Select(x => x.Dogs).ToList();
+            var newListOfDogs = new List<Dog>();
+            Console.WriteLine("The dogs of the persons older then Amelia ordered by age desending are: ");
+            foreach (var item in peopleOrderThenAmelia)
             {
-                if (per.Dogs.Count != 0) { 
-                    Console.WriteLine($"Person's name {per.FirstName}");
-                foreach (var dog in per.Dogs.OrderByDescending(x => x.Age))
+                foreach (var dog in item)
                 {
-                    Console.WriteLine($"{dog.Name}  {dog.Age}");
-                }
-                }
-                else {
-                    continue;
+                    newListOfDogs.Add(dog);
                 }
             }
-
-
+            foreach (var myDog in newListOfDogs.OrderByDescending(x=>x.Age))
+            {
+                Console.WriteLine(myDog.Age + "   " + myDog.Name);
+            }
             // 10. Find all developers older than 20 with more than 1 dog that contains letter 'e' in the name and print their names and job positions.
             var developersOlderThen20 = people.Where(x => x.Occupation == Job.Developer).Where(x => x.Age > 20).Where(x => x.Dogs.Count > 1).Where(x => x.FirstName.Contains("R") || x.LastName.Contains("R")).ToList();
             foreach (var developer in developersOlderThen20)
