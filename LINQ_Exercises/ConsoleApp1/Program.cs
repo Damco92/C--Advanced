@@ -140,38 +140,31 @@ namespace ConsoleApp1
             // PrintPerson(moreThenTwoDogs);
             // Console.Read();
             // 4. Find and print all persons names, last names and job positions that have just one race type dogs.
-            //List<Person> myPeople = new List<Person> { };
-            //foreach (var person in people)
+
+            var fancyResult = people.Where(p => p.Dogs != null)
+                .Select(p => new { FirstName = p.FirstName, DifferentDogRaces = p.Dogs.Select(d => d.Breed).Distinct() })
+                .Where(x => x.DifferentDogRaces.Count() == 1)
+                .ToList();
+
+            //foreach (var item in fancyResult)
             //{
-            //    if (CheckDogSame(person)== false)
-            //    {
-            //        myPeople.Add(person);
-            //    }
+            //    Console.WriteLine($"{item.FirstName}");
+            //    Console.WriteLine(item.DifferentDogRaces.ToList().Select(x=>x.ToString()));
             //}
-            //foreach (var per in myPeople)
-            //{
-            //    if(per.Dogs.Count > 0)
-            //    {
-            //        Console.WriteLine($"Person {per.FirstName} {per.LastName} {per.Occupation}");
-            //        foreach (var dogg in per.Dogs)
-            //        {
-            //            Console.WriteLine(dogg.Breed);
-            //        }
-            //    }
-            //}
-            // PrintPerson(myPeople);
+
+
             // 5. Find and print all Freddy`s dogs names older than 1 year, grouped by dogs race.
-            //var Fredie = people.Where(x => x.FirstName == "Freddy").FirstOrDefault();
-            //var frediesDogs = Fredie.Dogs.Where(x => x.Age > 1).GroupBy(x => x.Breed).ToList();
-            //Console.WriteLine("Freddy's dogs :");
-            //foreach (var dog in frediesDogs)
-            //{
-            //    Console.WriteLine($"The dog breed's are: {dog.Key}");
-            //    foreach (var dogg in dog)
-            //    {
-            //        Console.WriteLine(dogg.Name);
-            //    }
-            //}
+            var fredie = people.Where(x => x.FirstName == "Freddy").FirstOrDefault();
+            var frediesdogs = fredie.Dogs.Where(x => x.Age > 1).GroupBy(x => x.Breed).ToList();
+            Console.WriteLine("freddy's dogs :");
+            foreach (var dog in frediesdogs)
+            {
+                Console.WriteLine($"the dog breed's are: {dog.Key}");
+                foreach (var dogg in dog)
+                {
+                    Console.WriteLine(dogg.Name);
+                }
+            }
             // 6. Find and print last 10 persons grouped by their age.
             //var lastTenPersons = people.Count - 10;
             //var groupedPersons = people.SkipWhile((person, index) => index < lastTenPersons).GroupBy(x => x.Age).ToList();
@@ -198,7 +191,9 @@ namespace ConsoleApp1
             //        }
             //    }
             //}
-            // 8. Find all persons that have same dogs races and order them by name length ASCENDING, then by age DESCENDING.
+            // 8. Find all persons that have same dogs races and order them by name length ASCENDING, then by age DESCENDING. try with Intersect
+
+
             //List<Person> myPe = new List<Person> { };
             //foreach (var item in people)
             //{
@@ -209,26 +204,26 @@ namespace ConsoleApp1
             //}
 
             // 9. Find the last dog of Amelia and print all dogs form other persons older than Amelia, ordered by dogs age DESCENDING.
-            var ameliaLastDog = Amelia.Dogs.LastOrDefault();
-            var peopleOrderThenAmelia = people.Where(x => x.Age > Amelia.Age).Select(x => x.Dogs).ToList();
-            var newListOfDogs = new List<Dog>();
-            Console.WriteLine("The dogs of the persons older then Amelia ordered by age desending are: ");
-            foreach (var item in peopleOrderThenAmelia)
-            {
-                foreach (var dog in item)
-                {
-                    newListOfDogs.Add(dog);
-                }
-            }
-            foreach (var myDog in newListOfDogs.OrderByDescending(x=>x.Age))
-            {
-                Console.WriteLine(myDog.Age + "   " + myDog.Name);
-            }
-            // 10. Find all developers older than 20 with more than 1 dog that contains letter 'e' in the name and print their names and job positions.
-            var developersOlderThen20 = people.Where(x => x.Occupation == Job.Developer).Where(x => x.Age > 20).Where(x => x.Dogs.Count > 1).Where(x => x.FirstName.Contains("R") || x.LastName.Contains("R")).ToList();
+            //var ameliaLastDog = Amelia.Dogs.LastOrDefault();
+            //var peopleOrderThenAmelia = people.Where(x => x.Age > Amelia.Age).Select(x => x.Dogs).ToList();
+            //var newListOfDogs = new List<Dog>();
+            //Console.WriteLine("The dogs of the persons older then Amelia ordered by age desending are: ");
+            //foreach (var item in peopleOrderThenAmelia)
+            //{
+            //    foreach (var dog in item)
+            //    {
+            //        newListOfDogs.Add(dog);
+            //    }
+            //}
+            //foreach (var myDog in newListOfDogs.OrderByDescending(x=>x.Age))
+            //{
+            //    Console.WriteLine(myDog.Age + "   " + myDog.Name);
+            //}
+            //// 10. Find all developers older than 20 with more than 1 dog that contains letter 'e' in the name and print their names and job positions.
+            var developersOlderThen20 = people.Where(x => x.Occupation == Job.Developer).Where(x => x.Age > 20).Where(x => x.Dogs.Count > 1).Select(p=> new {Name = p.FirstName, LastName = p.LastName,Profession = p.Occupation,Dogs = p.Dogs.Select(x=>x.Name.Contains("R"))}).ToList();
             foreach (var developer in developersOlderThen20)
             {
-                Console.WriteLine($"Developer name: {developer.FirstName} {developer.LastName}, job position: {developer.Occupation}");
+                Console.WriteLine($"Developer name: {developer.Name} {developer.LastName}, job position: {developer.Profession}");
             }
 
             #endregion
@@ -259,29 +254,6 @@ namespace ConsoleApp1
             }
             return check;
         }
-
-        public static bool CheckDogSame(Person p)
-        {
-            bool check = false;
-            foreach (var dogg in p.Dogs)
-            {
-                if(p.Dogs != null)
-                {
-                    Breed breed = p.Dogs[0].Breed;
-                    if(p.Dogs.Any(x=> x.Breed != breed))
-                    {
-                        check = true;
-                        break;
-                    }
-                }
-                else
-                {
-                    continue;
-                }
-            }
-            return check;
-        }
-
 
         
 
